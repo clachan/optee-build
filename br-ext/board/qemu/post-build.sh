@@ -41,3 +41,6 @@ if [[ $PSS_AUTOMOUNT == "y" ]]; then
     echo "secure /data/tee 9p trans=virtio,version=9p2000.L,msize=65536,rw 0 0" >> "$TARGET_DIR"/etc/fstab
     echo "[+] persistent secure storage mount added to fstab"
 fi
+
+sed -i -e 's/#PermitEmptyPasswords no/PermitEmptyPasswords yes/' "$TARGET_DIR"/etc/ssh/sshd_config
+sed -i -e 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' "$TARGET_DIR"/etc/ssh/sshd_config

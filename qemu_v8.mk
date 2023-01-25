@@ -13,9 +13,44 @@ COMPILE_S_KERNEL ?= 64
 ################################################################################
 TF_A_TRUSTED_BOARD_BOOT ?= n
 
+QEMU_VIRTFS_ENABLE = y
+QEMU_VIRTFS_AUTOMOUNT = y
+# create /tmp/qemu-data-tee first
+QEMU_PSS_ENABLE = y
+QEMU_PSS_AUTOMOUNT = y
+
 BR2_ROOTFS_OVERLAY = $(ROOT)/build/br-ext/board/qemu/overlay
 BR2_ROOTFS_POST_BUILD_SCRIPT = $(ROOT)/build/br-ext/board/qemu/post-build.sh
 BR2_ROOTFS_POST_SCRIPT_ARGS = "$(QEMU_VIRTFS_AUTOMOUNT) $(QEMU_VIRTFS_MOUNTPOINT) $(QEMU_PSS_AUTOMOUNT)"
+
+#### BR2 related
+### containerd
+BR2_PACKAGE_CONTAINERD = y
+BR2_PACKAGE_CGROUPFS_MOUNT = y
+BR2_PACKAGE_FUSE_OVERLAYFS = y
+BR2_PACKAGE_CA_CERTIFICATES = y
+### sshfs
+BR2_PACKAGE_SSHFS = y
+### debug support
+BR2_PACKAGE_GDB_SERVER = y
+BR2_PACKAGE_DELVE = y
+BR2_ENABLE_DEBUG = y
+BR2_STRIP_strip = n
+### bpf
+#BR2_PACKAGE_BPFTOOL = y
+#BR2_PACKAGE_BPFTOOL_ARCH_SUPPORTS = y
+BR2_PACKAGE_PLY = y
+### Enable SSH daemon for remote login
+BR2_PACKAGE_OPENSSH = y
+BR2_PACKAGE_OPENSSH_SERVER = y
+
+#### common.mk directives
+### exports port 12345 to host
+GDBSERVER = y
+
+#### OPTEE directives
+### disable ASLR
+CFG_CORE_ASLR = n
 
 OPTEE_OS_PLATFORM = vexpress-qemu_armv8a
 

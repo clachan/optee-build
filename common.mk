@@ -465,7 +465,7 @@ endif
 endif
 
 ifeq ($(GDBSERVER),y)
-HOSTFWD := ,hostfwd=tcp::12345-:12345
+HOSTFWD := ,hostfwd=tcp::12345-:12345,hostfwd=tcp::10022-:22
 endif
 # Enable QEMU SLiRP user networking
 QEMU_EXTRA_ARGS +=\
